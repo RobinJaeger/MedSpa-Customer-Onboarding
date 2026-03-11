@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="theme-color" content="#F4E4E1" />
+    <meta
+      name="description"
+      content="Client Onboarding Form - Kosmetikstudio"
+    />
+
+    <title data-i18n="pageTitle">Kunden-Onboarding | Kosmetikstudio</title>
+
+    <!-- Apple Touch Icon -->
+    <link
+      rel="apple-touch-icon"
+      href="https://img.icons8.com/fluency/192/spa-flower.png"
+    />
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://img.icons8.com/fluency/192/spa-flower.png"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with Logo and Language Switcher -->
+      <header class="header">
+        <div class="logo-container">
+          <img
+            src="assets/logo.png"
+            alt="Studio Logo"
+            class="logo"
+            id="studioLogo"
+          />
+        </div>
+
+        <div class="language-switcher">
+          <button class="lang-btn active" data-lang="de">DE</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </header>
+
+      <!-- Main Form -->
+      <main class="main-content">
+        <h2 class="form-title" data-i18n="formTitle">
+          Kunden-Onboarding Formular
+        </h2>
+
+        <form id="onboardingForm" class="onboarding-form">
+          <!-- Personal Information Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="personalInfo">
+              Persönliche Daten
+            </h3>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="firstName" class="form-label">
+                  <span data-i18n="firstName">Vorname</span>
+                  <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  class="form-input"
+                  data-i18n-placeholder="firstNamePlaceholder"
+                  placeholder="z.B. Anna"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="lastName" class="form-label">
+                  <span data-i18n="lastName">Nachname</span>
+                  <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  class="form-input"
+                  data-i18n-placeholder="lastNamePlaceholder"
+                  placeholder="z.B. Schmidt"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="birthDate" class="form-label" data-i18n="birthDate"
+                  >Geburtsdatum</label
+                >
+                <input
+                  type="date"
+                  id="birthDate"
+                  name="birthDate"
+                  class="form-input"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="phone" class="form-label" data-i18n="phone"
+                  >Telefonnummer</label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="form-input"
+                  data-i18n-placeholder="phonePlaceholder"
+                  placeholder="+49 123 456789"
+                />
+              </div>
+
+              <div class="form-group full-width">
+                <label for="email" class="form-label" data-i18n="email"
+                  >E-Mail</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-input"
+                  data-i18n-placeholder="emailPlaceholder"
+                  placeholder="beispiel@email.de"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- Health Information Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="healthInfo">
+              Gesundheitsinformationen
+            </h3>
+
+            <div class="form-group">
+              <label for="allergies" class="form-label" data-i18n="allergies"
+                >Allergien</label
+              >
+              <textarea
+                id="allergies"
+                name="allergies"
+                class="form-textarea"
+                rows="3"
+                data-i18n-placeholder="allergiesPlaceholder"
+                placeholder="Bitte geben Sie bekannte Allergien an..."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label
+                for="healthNotes"
+                class="form-label"
+                data-i18n="healthNotes"
+                >Gesundheitliche Hinweise</label
+              >
+              <textarea
+                id="healthNotes"
+                name="healthNotes"
+                class="form-textarea"
+                rows="3"
+                data-i18n-placeholder="healthNotesPlaceholder"
+                placeholder="Medikamente, Hauterkrankungen, etc..."
+              ></textarea>
+            </div>
+          </section>
+
+          <!-- Preferences Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="preferences">
+              Präferenzen & Notizen
+            </h3>
+
+            <div class="form-group">
+              <label
+                for="preferences"
+                class="form-label"
+                data-i18n="preferencesLabel"
+                >Notizen</label
+              >
+              <textarea
+                id="preferences"
+                name="preferences"
+                class="form-textarea"
+                rows="4"
+                data-i18n-placeholder="preferencesPlaceholder"
+                placeholder="Besondere Wünsche, bevorzugte Behandlungen, etc..."
+              ></textarea>
+            </div>
+          </section>
+
+          <!-- Photo Upload Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="photoUpload">
+              Foto (optional)
+            </h3>
+
+            <div class="form-group">
+              <label for="photoInput" class="form-label" data-i18n="photoLabel"
+                >Hautzustand / Vorher-Foto</label
+              >
+              <input
+                type="file"
+                id="photoInput"
+                name="photo"
+                accept="image/*"
+                capture="environment"
+                class="form-file-input"
+              />
+              <label for="photoInput" class="file-upload-label">
+                <span class="upload-icon">📷</span>
+                <span data-i18n="choosePhoto"
+                  >Foto auswählen oder aufnehmen</span
+                >
+              </label>
+
+              <div id="photoPreview" class="photo-preview hidden">
+                <img id="previewImage" src="" alt="Preview" />
+                <button
+                  type="button"
+                  id="removePhoto"
+                  class="btn-remove-photo"
+                  data-i18n="removePhoto"
+                >
+                  Entfernen
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Signature Section -->
+          <section class="form-section">
+            <h3 class="section-title">
+              <span data-i18n="signature">Unterschrift</span>
+              <span class="required">*</span>
+            </h3>
+
+            <div class="signature-container">
+              <p class="signature-hint" data-i18n="signatureHint">
+                Bitte unterschreiben Sie mit dem Finger oder einem Stift
+              </p>
+              <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+              <button
+                type="button"
+                id="clearSignature"
+                class="btn-secondary"
+                data-i18n="clearSignature"
+              >
+                Unterschrift löschen
+              </button>
+            </div>
+          </section>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button
+              type="button"
+              id="resetForm"
+              class="btn-secondary"
+              data-i18n="resetForm"
+            >
+              Formular zurücksetzen
+            </button>
+            <button
+              type="submit"
+              id="generatePDF"
+              class="btn-primary"
+              data-i18n="generatePDF"
+            >
+              PDF erstellen
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <!-- Loading Overlay -->
+      <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p class="loading-text" data-i18n="generating">PDF wird erstellt...</p>
+      </div>
+
+      <!-- Success Message -->
+      <div id="successMessage" class="success-message hidden">
+        <div class="success-icon">✓</div>
+        <p data-i18n="successText">PDF erfolgreich erstellt!</p>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p class="footer-text" data-i18n="footerText">
+          © 2026 Kosmetikstudio | Alle Daten bleiben auf Ihrem Gerät
+        </p>
+      </footer>
+    </div>
+
+    <!-- External Libraries from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/signature.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker Registration (optional - for enhanced offline support) -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./service-worker.js")
+            .then((registration) => {
+              console.log("Service Worker registered:", registration.scope);
+            })
+            .catch((error) => {
+              console.log("Service Worker registration failed:", error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
