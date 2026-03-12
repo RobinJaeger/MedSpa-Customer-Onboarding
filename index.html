@@ -60,196 +60,471 @@
       <!-- Main Form -->
       <main class="main-content">
         <h2 class="form-title" data-i18n="formTitle">
-          Kunden-Onboarding Formular
+          Kundeneinverständniserklärung für Permanent Make-up (PMU)
         </h2>
 
         <form id="onboardingForm" class="onboarding-form">
           <!-- Personal Information Section -->
           <section class="form-section">
-            <h3 class="section-title" data-i18n="personalInfo">
-              Persönliche Daten
-            </h3>
-
             <div class="form-grid">
-              <div class="form-group">
-                <label for="firstName" class="form-label">
-                  <span data-i18n="firstName">Vorname</span>
+              <div class="form-group full-width">
+                <label for="customerName" class="form-label">
+                  <span data-i18n="customerName"
+                    >Name der Kundin / des Kunden</span
+                  >
                   <span class="required">*</span>
                 </label>
                 <input
                   type="text"
-                  id="firstName"
-                  name="firstName"
+                  id="customerName"
+                  name="customerName"
                   class="form-input"
-                  data-i18n-placeholder="firstNamePlaceholder"
-                  placeholder="z.B. Anna"
                   required
                 />
               </div>
 
               <div class="form-group">
-                <label for="lastName" class="form-label">
-                  <span data-i18n="lastName">Nachname</span>
+                <label for="birthDate" class="form-label">
+                  <span data-i18n="birthDate">Geburtsdatum</span>
                   <span class="required">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  class="form-input"
-                  data-i18n-placeholder="lastNamePlaceholder"
-                  placeholder="z.B. Schmidt"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="birthDate" class="form-label" data-i18n="birthDate"
-                  >Geburtsdatum</label
-                >
                 <input
                   type="date"
                   id="birthDate"
                   name="birthDate"
                   class="form-input"
+                  required
                 />
               </div>
 
               <div class="form-group">
-                <label for="phone" class="form-label" data-i18n="phone"
-                  >Telefonnummer</label
-                >
+                <label for="phone" class="form-label">
+                  <span data-i18n="phone">Telefonnummer</span>
+                  <span class="required">*</span>
+                </label>
                 <input
                   type="tel"
                   id="phone"
                   name="phone"
                   class="form-input"
-                  data-i18n-placeholder="phonePlaceholder"
-                  placeholder="+49 123 456789"
+                  required
                 />
               </div>
 
               <div class="form-group full-width">
-                <label for="email" class="form-label" data-i18n="email"
-                  >E-Mail</label
-                >
+                <label for="email" class="form-label">
+                  <span data-i18n="email">E-Mail-Adresse</span>
+                  <span class="required">*</span>
+                </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   class="form-input"
-                  data-i18n-placeholder="emailPlaceholder"
-                  placeholder="beispiel@email.de"
+                  required
                 />
               </div>
             </div>
           </section>
 
-          <!-- Health Information Section -->
+          <!-- Treatment Description Section -->
           <section class="form-section">
-            <h3 class="section-title" data-i18n="healthInfo">
-              Gesundheitsinformationen
+            <h3 class="section-title" data-i18n="section1Title">
+              1. Beschreibung der Behandlung
             </h3>
 
-            <div class="form-group">
-              <label for="allergies" class="form-label" data-i18n="allergies"
-                >Allergien</label
-              >
-              <textarea
-                id="allergies"
-                name="allergies"
-                class="form-textarea"
-                rows="3"
-                data-i18n-placeholder="allergiesPlaceholder"
-                placeholder="Bitte geben Sie bekannte Allergien an..."
-              ></textarea>
+            <p class="section-text" data-i18n="section1Text">
+              Ich, die unterzeichnende Kundin / der unterzeichnende Kunde,
+              erkläre mich ausdrücklich damit einverstanden, dass an mir eine
+              kosmetische Pigmentierung (Permanent Make-up) durchgeführt wird.
+            </p>
+
+            <p class="section-text" data-i18n="section1Text2">
+              Diese Behandlung umfasst das Einbringen von Farbpigmenten in die
+              obere Hautschicht mittels einer feinen Nadel/Blade und erfolgt an
+              folgenden Bereichen: (bitte ankreuzen):
+            </p>
+
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="treatment[]"
+                  value="manualHairStroke"
+                />
+                <span data-i18n="treatmentManualHairStroke"
+                  >manuelle Härchenzeichnung</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="treatment[]"
+                  value="powderShading"
+                />
+                <span data-i18n="treatmentPowderShading"
+                  >Puderschattierung</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="treatment[]"
+                  value="comboHairShading"
+                />
+                <span data-i18n="treatmentComboHairShading"
+                  >Kombi aus Härchen & Schattierung</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="treatment[]"
+                  value="lipFullShading"
+                />
+                <span data-i18n="treatmentLipFullShading"
+                  >Lippenpigmentierung, Vollschattierung</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="treatment[]"
+                  value="lipPartialShading"
+                />
+                <span data-i18n="treatmentLipPartialShading"
+                  >Lippenpigmentierung, Teilschattierung</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="treatment[]" value="eyeliner" />
+                <span data-i18n="treatmentEyeliner">Lidstrich</span>
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="treatment[]" value="lashLine" />
+                <span data-i18n="treatmentLashLine"
+                  >Wimpernkranzverdichtung oben/unten</span
+                >
+              </label>
+            </div>
+          </section>
+
+          <!-- Health Information Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="section2Title">
+              2. Gesundheitliche Angaben
+            </h3>
+
+            <p class="section-text" data-i18n="section2Text">
+              Ich bestätige, dass ich die folgenden Angaben wahrheitsgemäß
+              gemacht habe:
+            </p>
+
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="health[]" value="noAllergies" />
+                <span data-i18n="healthNoAllergies"
+                  >Keine Allergien gegen Farb- oder Pflegeprodukte</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="health[]"
+                  value="noBloodDisorders"
+                />
+                <span data-i18n="healthNoBloodDisorders"
+                  >Keine Blutgerinnungsstörungen / Einnahme blutverdünnender
+                  Medikamente</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="health[]"
+                  value="noChronicSkinDiseases"
+                />
+                <span data-i18n="healthNoChronicSkinDiseases"
+                  >Keine chronischen Hauterkrankungen (z. B. Neurodermitis,
+                  Psoriasis)</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="health[]"
+                  value="noHerpesInfection"
+                />
+                <span data-i18n="healthNoHerpesInfection"
+                  >Keine aktive Herpesinfektion (bei Lippen-PMU)</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="health[]"
+                  value="noPregnancyBreastfeeding"
+                />
+                <span data-i18n="healthNoPregnancyBreastfeeding"
+                  >Keine Schwangerschaft oder Stillzeit</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="health[]"
+                  value="noRecentCosmeticTreatments"
+                />
+                <span data-i18n="healthNoRecentCosmeticTreatments"
+                  >Keine kürzlich durchgeführten kosmetischen Behandlungen im
+                  betroffenen Bereich</span
+                >
+              </label>
+
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="health[]"
+                  value="noCardiovascularEpilepsy"
+                />
+                <span data-i18n="healthNoCardiovascularEpilepsy"
+                  >Keine bekannten Herz-Kreislauf-Erkrankungen / Epilepsie</span
+                >
+              </label>
             </div>
 
             <div class="form-group">
               <label
                 for="healthNotes"
                 class="form-label"
-                data-i18n="healthNotes"
-                >Gesundheitliche Hinweise</label
+                data-i18n="healthNotesLabel"
               >
+                Falls etwas davon zutrifft, bitte hier notieren:
+              </label>
               <textarea
                 id="healthNotes"
                 name="healthNotes"
                 class="form-textarea"
                 rows="3"
-                data-i18n-placeholder="healthNotesPlaceholder"
-                placeholder="Medikamente, Hauterkrankungen, etc..."
               ></textarea>
             </div>
           </section>
 
-          <!-- Preferences Section -->
+          <!-- Treatment Education Section -->
           <section class="form-section">
-            <h3 class="section-title" data-i18n="preferences">
-              Präferenzen & Notizen
+            <h3 class="section-title" data-i18n="section3Title">
+              3. Aufklärung über die Behandlung
             </h3>
 
-            <div class="form-group">
-              <label
-                for="preferences"
-                class="form-label"
-                data-i18n="preferencesLabel"
-                >Notizen</label
-              >
-              <textarea
-                id="preferences"
-                name="preferences"
-                class="form-textarea"
-                rows="4"
-                data-i18n-placeholder="preferencesPlaceholder"
-                placeholder="Besondere Wünsche, bevorzugte Behandlungen, etc..."
-              ></textarea>
+            <p class="section-text" data-i18n="section3Text">
+              Ich wurde ausführlich über folgende Punkte aufgeklärt und habe sie
+              verstanden:
+            </p>
+
+            <div class="info-list">
+              <p data-i18n="education1">
+                - Der Ablauf der Behandlung, inkl. Technik, verwendete Farben
+                und Instrumente.
+              </p>
+
+              <p data-i18n="educationRisksTitle">
+                <strong>Mögliche Risiken, u. a.:</strong>
+              </p>
+              <ul class="bullet-list">
+                <li data-i18n="educationRisk1">
+                  Hautirritationen, Schwellungen, Rötungen
+                </li>
+                <li data-i18n="educationRisk2">
+                  Infektionen bei unzureichender Nachsorge
+                </li>
+                <li data-i18n="educationRisk3">
+                  allergische Reaktionen auf Pigmente oder Pflegeprodukte
+                </li>
+                <li data-i18n="educationRisk4">
+                  ungleichmäßiges Abheilen / Pigmentverlust
+                </li>
+              </ul>
+
+              <p data-i18n="educationSideEffectsTitle">
+                <strong>Mögliche Nebenwirkungen und Komplikationen</strong>
+              </p>
+              <ul class="bullet-list">
+                <li data-i18n="educationSideEffect1">
+                  Dass eine Nachbehandlung erforderlich ist, da etwa 30–60 % der
+                  Farbe nach der ersten Behandlung verblassen können.
+                </li>
+                <li data-i18n="educationSideEffect2">
+                  Dass die Abheilung individuell unterschiedlich verläuft
+                  (Dauer: ca. 5–14 Tage).
+                </li>
+                <li data-i18n="educationSideEffect3">
+                  Dass das endgültige Ergebnis erst nach vollständiger Abheilung
+                  (ca. 4–6 Wochen) sichtbar ist.
+                </li>
+                <li data-i18n="educationSideEffect4">
+                  Dass bei vorher bestehenden Hautveränderungen (z. B. Narben,
+                  Couperose, Neurodermitis) ein abweichendes Ergebnis möglich
+                  ist.
+                </li>
+                <li data-i18n="educationSideEffect5">
+                  Dass die Behandlung keine medizinische oder dermatologische
+                  Maßnahme darstellt.
+                </li>
+              </ul>
             </div>
           </section>
 
-          <!-- Photo Upload Section -->
+          <!-- Aftercare Section -->
           <section class="form-section">
-            <h3 class="section-title" data-i18n="photoUpload">
-              Foto (optional)
+            <h3 class="section-title" data-i18n="section4Title">
+              4. Nachbehandlung und Abheilung
             </h3>
 
-            <div class="form-group">
-              <label for="photoInput" class="form-label" data-i18n="photoLabel"
-                >Hautzustand / Vorher-Foto</label
-              >
-              <input
-                type="file"
-                id="photoInput"
-                name="photo"
-                accept="image/*"
-                capture="environment"
-                class="form-file-input"
-              />
-              <label for="photoInput" class="file-upload-label">
-                <span class="upload-icon">📷</span>
-                <span data-i18n="choosePhoto"
-                  >Foto auswählen oder aufnehmen</span
-                >
+            <p class="section-text" data-i18n="section4Text">
+              Ich verpflichte mich, die mitgegebenen oder mündlich erklärten
+              Pflegehinweise während der Abheilzeit gewissenhaft zu befolgen,
+              insbesondere:
+            </p>
+
+            <div class="info-list">
+              <ul class="bullet-list">
+                <li data-i18n="aftercare1">
+                  Kein Kratzen oder Abreißen von Krusten oder Schorf
+                </li>
+                <li data-i18n="aftercare2">
+                  Kein Solarium, Schwimmbad, Sauna oder starke Sonnenbestrahlung
+                  in den ersten 7 Tagen
+                </li>
+                <li data-i18n="aftercare3">
+                  Kein Make-up oder aggressive Pflegeprodukte auf den
+                  behandelten Arealen
+                </li>
+                <li data-i18n="aftercare4">
+                  Kontakt mit Schmutz, Schweiß oder Reibung vermeiden
+                </li>
+                <li data-i18n="aftercare5">
+                  Kein direkter starker Wasserkontakt auf die Partie
+                </li>
+              </ul>
+
+              <p class="section-text" data-i18n="section4Text2">
+                Mir ist bewusst, dass eine unsachgemäße Nachsorge das Ergebnis
+                erheblich beeinträchtigen kann und nicht unter die Haftung der
+                Behandlerin / des Behandlers fällt.
+              </p>
+            </div>
+          </section>
+
+          <!-- Liability Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="section5Title">
+              5. Haftungsausschluss
+            </h3>
+
+            <p class="section-text" data-i18n="section5Text">
+              Ich erkläre hiermit, dass ich die Behandlung freiwillig und auf
+              eigene Verantwortung durchführen lasse. Ich entbinde die
+              Behandlerin / den Behandler von jeglicher Haftung für mögliche
+              unerwünschte Reaktionen oder ästhetische Ergebnisse, sofern diese
+              nicht auf grobe Fahrlässigkeit zurückzuführen sind.
+            </p>
+          </section>
+
+          <!-- Data Protection Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="section6Title">
+              6. Datenschutz
+            </h3>
+
+            <p class="section-text" data-i18n="section6Text">
+              Ich bin damit einverstanden, dass meine personenbezogenen Daten im
+              Rahmen der Behandlung dokumentiert und gespeichert werden. Eine
+              Weitergabe an Dritte erfolgt nicht.
+            </p>
+
+            <h4 class="subsection-title" data-i18n="photoConsentTitle">
+              Einwilligung zur Fotoverwendung
+            </h4>
+
+            <p class="section-text" data-i18n="photoConsentText">
+              Ich bin damit einverstanden, dass im Rahmen der Behandlung (z.B.
+              Vorher-Nachher-Bild) von mir gemacht werden. Diese dürfen zu
+              Dokumentations- und Werbezwecken verwendet werden, insbesondere
+              auf Social Media (z.B. Instagram, Tik Tok), auf der Webseite sowie
+              in Print- oder Online-Medien des Studios.
+            </p>
+
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="photoConsent" value="yes" required />
+                <span data-i18n="yes">ja</span>
               </label>
 
-              <div id="photoPreview" class="photo-preview hidden">
-                <img id="previewImage" src="" alt="Preview" />
-                <button
-                  type="button"
-                  id="removePhoto"
-                  class="btn-remove-photo"
-                  data-i18n="removePhoto"
-                >
-                  Entfernen
-                </button>
-              </div>
+              <label class="radio-label">
+                <input type="radio" name="photoConsent" value="no" required />
+                <span data-i18n="no">nein</span>
+              </label>
             </div>
           </section>
 
-          <!-- Signature Section -->
+          <!-- Consent and Signature Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="section7Title">
+              7. Einverständnis und Unterschrift
+            </h3>
+
+            <p class="section-text" data-i18n="section7Text">
+              Ich bestätige, dass ich:
+            </p>
+
+            <div class="info-list">
+              <ul class="bullet-list">
+                <li data-i18n="consent1">
+                  die Behandlung in vollem Umfang verstanden habe.
+                </li>
+                <li data-i18n="consent2">umfassend aufgeklärt wurde.</li>
+                <li data-i18n="consent3">
+                  alle Fragen gestellt und zufriedenstellend beantwortet
+                  bekommen habe.
+                </li>
+                <li data-i18n="consent4">
+                  mit der Durchführung einverstanden bin.
+                </li>
+              </ul>
+            </div>
+
+            <div class="form-group">
+              <label for="locationDate" class="form-label">
+                <span data-i18n="locationDate">Ort, Datum</span>
+                <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="locationDate"
+                name="locationDate"
+                class="form-input"
+                required
+              />
+            </div>
+          </section>
+
+          <!-- Customer Signature Section -->
           <section class="form-section">
             <h3 class="section-title">
-              <span data-i18n="signature">Unterschrift</span>
+              <span data-i18n="signatureCustomer"
+                >Unterschrift Kundin / Kunde</span
+              >
               <span class="required">*</span>
             </h3>
 
@@ -266,6 +541,69 @@
               >
                 Unterschrift löschen
               </button>
+            </div>
+          </section>
+
+          <!-- Practitioner Signature Section -->
+          <section class="form-section">
+            <h3 class="section-title">
+              <span data-i18n="signaturePractitioner"
+                >Unterschrift Behandler:in</span
+              >
+              <span class="required">*</span>
+            </h3>
+
+            <div class="signature-container">
+              <p class="signature-hint" data-i18n="signatureHintPractitioner">
+                Unterschrift der Behandlerin / des Behandlers
+              </p>
+              <canvas
+                id="signatureCanvasPractitioner"
+                class="signature-canvas"
+              ></canvas>
+              <button
+                type="button"
+                id="clearSignaturePractitioner"
+                class="btn-secondary"
+                data-i18n="clearSignature"
+              >
+                Unterschrift löschen
+              </button>
+            </div>
+          </section>
+
+          <!-- Additional Notes Section -->
+          <section class="form-section">
+            <h3 class="section-title" data-i18n="additionalNotesTitle">
+              Zusätzliche Notizen
+            </h3>
+
+            <div class="form-group">
+              <label
+                for="treatmentDate"
+                class="form-label"
+                data-i18n="treatmentDate"
+              >
+                Datum der Behandlung:
+              </label>
+              <input
+                type="date"
+                id="treatmentDate"
+                name="treatmentDate"
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="colorNotes" class="form-label" data-i18n="colorNotes">
+                Farbkombination/Notizen:
+              </label>
+              <textarea
+                id="colorNotes"
+                name="colorNotes"
+                class="form-textarea"
+                rows="4"
+              ></textarea>
             </div>
           </section>
 

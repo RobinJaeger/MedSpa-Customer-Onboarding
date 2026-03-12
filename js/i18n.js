@@ -5,49 +5,132 @@
 const translations = {
   de: {
     // Page
-    pageTitle: "Kunden-Onboarding | Kosmetikstudio",
+    pageTitle: "Kundeneinverständniserklärung für Permanent Make-up (PMU)",
     studioName: "Kosmetikstudio",
-    formTitle: "Kunden-Onboarding Formular",
-
-    // Sections
-    personalInfo: "Persönliche Daten",
-    healthInfo: "Gesundheitsinformationen",
-    preferences: "Präferenzen & Notizen",
-    photoUpload: "Foto (optional)",
-    signature: "Unterschrift",
+    formTitle: "Kundeneinverständniserklärung für Permanent Make-up (PMU)",
 
     // Personal Information
-    firstName: "Vorname",
-    lastName: "Nachname",
+    customerName: "Name der Kundin / des Kunden",
     birthDate: "Geburtsdatum",
     phone: "Telefonnummer",
-    email: "E-Mail",
+    email: "E-Mail-Adresse",
 
-    // Placeholders
-    firstNamePlaceholder: "z.B. Anna",
-    lastNamePlaceholder: "z.B. Schmidt",
-    phonePlaceholder: "+49 123 456789",
-    emailPlaceholder: "beispiel@email.de",
+    // Section 1: Treatment Description
+    section1Title: "1. Beschreibung der Behandlung",
+    section1Text:
+      "Ich, die unterzeichnende Kundin / der unterzeichnende Kunde, erkläre mich ausdrücklich damit einverstanden, dass an mir eine kosmetische Pigmentierung (Permanent Make-up) durchgeführt wird.",
+    section1Text2:
+      "Diese Behandlung umfasst das Einbringen von Farbpigmenten in die obere Hautschicht mittels einer feinen Nadel/Blade und erfolgt an folgenden Bereichen: (bitte ankreuzen):",
 
-    // Health Information
-    allergies: "Allergien",
-    allergiesPlaceholder: "Bitte geben Sie bekannte Allergien an...",
-    healthNotes: "Gesundheitliche Hinweise",
-    healthNotesPlaceholder: "Medikamente, Hauterkrankungen, etc...",
+    // Treatment Types
+    treatmentManualHairStroke: "manuelle Härchenzeichnung",
+    treatmentPowderShading: "Puderschattierung",
+    treatmentComboHairShading: "Kombi aus Härchen & Schattierung",
+    treatmentLipFullShading: "Lippenpigmentierung, Vollschattierung",
+    treatmentLipPartialShading: "Lippenpigmentierung, Teilschattierung",
+    treatmentEyeliner: "Lidstrich",
+    treatmentLashLine: "Wimpernkranzverdichtung oben/unten",
 
-    // Preferences
-    preferencesLabel: "Notizen",
-    preferencesPlaceholder:
-      "Besondere Wünsche, bevorzugte Behandlungen, etc...",
+    // Section 2: Health Information
+    section2Title: "2. Gesundheitliche Angaben",
+    section2Text:
+      "Ich bestätige, dass ich die folgenden Angaben wahrheitsgemäß gemacht habe:",
 
-    // Photo
-    photoLabel: "Hautzustand / Vorher-Foto",
-    choosePhoto: "Foto auswählen oder aufnehmen",
-    removePhoto: "Entfernen",
+    // Health Checkboxes
+    healthNoAllergies: "Keine Allergien gegen Farb- oder Pflegeprodukte",
+    healthNoBloodDisorders:
+      "Keine Blutgerinnungsstörungen / Einnahme blutverdünnender Medikamente",
+    healthNoChronicSkinDiseases:
+      "Keine chronischen Hauterkrankungen (z. B. Neurodermitis, Psoriasis)",
+    healthNoHerpesInfection: "Keine aktive Herpesinfektion (bei Lippen-PMU)",
+    healthNoPregnancyBreastfeeding: "Keine Schwangerschaft oder Stillzeit",
+    healthNoRecentCosmeticTreatments:
+      "Keine kürzlich durchgeführten kosmetischen Behandlungen im betroffenen Bereich",
+    healthNoCardiovascularEpilepsy:
+      "Keine bekannten Herz-Kreislauf-Erkrankungen / Epilepsie",
+    healthNotesLabel: "Falls etwas davon zutrifft, bitte hier notieren:",
 
-    // Signature
+    // Section 3: Treatment Education
+    section3Title: "3. Aufklärung über die Behandlung",
+    section3Text:
+      "Ich wurde ausführlich über folgende Punkte aufgeklärt und habe sie verstanden:",
+
+    education1:
+      "- Der Ablauf der Behandlung, inkl. Technik, verwendete Farben und Instrumente.",
+    educationRisksTitle: "Mögliche Risiken, u. a.:",
+    educationRisk1: "Hautirritationen, Schwellungen, Rötungen",
+    educationRisk2: "Infektionen bei unzureichender Nachsorge",
+    educationRisk3: "allergische Reaktionen auf Pigmente oder Pflegeprodukte",
+    educationRisk4: "ungleichmäßiges Abheilen / Pigmentverlust",
+
+    educationSideEffectsTitle: "Mögliche Nebenwirkungen und Komplikationen",
+    educationSideEffect1:
+      "Dass eine Nachbehandlung erforderlich ist, da etwa 30–60 % der Farbe nach der ersten Behandlung verblassen können.",
+    educationSideEffect2:
+      "Dass die Abheilung individuell unterschiedlich verläuft (Dauer: ca. 5–14 Tage).",
+    educationSideEffect3:
+      "Dass das endgültige Ergebnis erst nach vollständiger Abheilung (ca. 4–6 Wochen) sichtbar ist.",
+    educationSideEffect4:
+      "Dass bei vorher bestehenden Hautveränderungen (z. B. Narben, Couperose, Neurodermitis) ein abweichendes Ergebnis möglich ist.",
+    educationSideEffect5:
+      "Dass die Behandlung keine medizinische oder dermatologische Maßnahme darstellt.",
+
+    // Section 4: Aftercare
+    section4Title: "4. Nachbehandlung und Abheilung",
+    section4Text:
+      "Ich verpflichte mich, die mitgegebenen oder mündlich erklärten Pflegehinweise während der Abheilzeit gewissenhaft zu befolgen, insbesondere:",
+
+    aftercare1: "Kein Kratzen oder Abreißen von Krusten oder Schorf",
+    aftercare2:
+      "Kein Solarium, Schwimmbad, Sauna oder starke Sonnenbestrahlung in den ersten 7 Tagen",
+    aftercare3:
+      "Kein Make-up oder aggressive Pflegeprodukte auf den behandelten Arealen",
+    aftercare4: "Kontakt mit Schmutz, Schweiß oder Reibung vermeiden",
+    aftercare5: "Kein direkter starker Wasserkontakt auf die Partie",
+
+    section4Text2:
+      "Mir ist bewusst, dass eine unsachgemäße Nachsorge das Ergebnis erheblich beeinträchtigen kann und nicht unter die Haftung der Behandlerin / des Behandlers fällt.",
+
+    // Section 5: Liability
+    section5Title: "5. Haftungsausschluss",
+    section5Text:
+      "Ich erkläre hiermit, dass ich die Behandlung freiwillig und auf eigene Verantwortung durchführen lasse. Ich entbinde die Behandlerin / den Behandler von jeglicher Haftung für mögliche unerwünschte Reaktionen oder ästhetische Ergebnisse, sofern diese nicht auf grobe Fahrlässigkeit zurückzuführen sind.",
+
+    // Section 6: Data Protection
+    section6Title: "6. Datenschutz",
+    section6Text:
+      "Ich bin damit einverstanden, dass meine personenbezogenen Daten im Rahmen der Behandlung dokumentiert und gespeichert werden. Eine Weitergabe an Dritte erfolgt nicht.",
+
+    photoConsentTitle: "Einwilligung zur Fotoverwendung",
+    photoConsentText:
+      "Ich bin damit einverstanden, dass im Rahmen der Behandlung (z.B. Vorher-Nachher-Bild) von mir gemacht werden. Diese dürfen zu Dokumentations- und Werbezwecken verwendet werden, insbesondere auf Social Media (z.B. Instagram, Tik Tok), auf der Webseite sowie in Print- oder Online-Medien des Studios.",
+
+    yes: "ja",
+    no: "nein",
+
+    // Section 7: Consent and Signature
+    section7Title: "7. Einverständnis und Unterschrift",
+    section7Text: "Ich bestätige, dass ich:",
+
+    consent1: "die Behandlung in vollem Umfang verstanden habe.",
+    consent2: "umfassend aufgeklärt wurde.",
+    consent3:
+      "alle Fragen gestellt und zufriedenstellend beantwortet bekommen habe.",
+    consent4: "mit der Durchführung einverstanden bin.",
+
+    locationDate: "Ort, Datum",
+
+    // Signatures
+    signatureCustomer: "Unterschrift Kundin / Kunde",
+    signaturePractitioner: "Unterschrift Behandler:in",
     signatureHint: "Bitte unterschreiben Sie mit dem Finger oder einem Stift",
+    signatureHintPractitioner: "Unterschrift der Behandlerin / des Behandlers",
     clearSignature: "Unterschrift löschen",
+
+    // Additional Notes
+    additionalNotesTitle: "Zusätzliche Notizen",
+    treatmentDate: "Datum der Behandlung:",
+    colorNotes: "Farbkombination/Notizen:",
 
     // Buttons
     resetForm: "Formular zurücksetzen",
@@ -70,60 +153,140 @@ const translations = {
       "Möchten Sie das Formular wirklich zurücksetzen? Alle eingegebenen Daten gehen verloren.",
 
     // PDF
-    pdfClientOnboarding: "Kunden-Onboarding",
+    pdfClientOnboarding:
+      "Kundeneinverständniserklärung für Permanent Make-up (PMU)",
     pdfDate: "Datum",
     pdfPersonalData: "Persönliche Daten",
-    pdfHealthData: "Gesundheitsinformationen",
-    pdfPreferences: "Präferenzen & Notizen",
-    pdfPhoto: "Foto",
-    pdfSignature: "Unterschrift des Kunden",
+    pdfSignature: "Unterschrift",
     pdfNone: "Keine Angabe",
   },
 
   en: {
     // Page
-    pageTitle: "Client Onboarding | Beauty Studio",
+    pageTitle: "Client Consent Form for Permanent Make-up (PMU)",
     studioName: "Beauty Studio",
-    formTitle: "Client Onboarding Form",
-
-    // Sections
-    personalInfo: "Personal Information",
-    healthInfo: "Health Information",
-    preferences: "Preferences & Notes",
-    photoUpload: "Photo (optional)",
-    signature: "Signature",
+    formTitle: "Client Consent Form for Permanent Make-up (PMU)",
 
     // Personal Information
-    firstName: "First Name",
-    lastName: "Last Name",
+    customerName: "Name of Client",
     birthDate: "Date of Birth",
     phone: "Phone Number",
-    email: "Email",
+    email: "Email Address",
 
-    // Placeholders
-    firstNamePlaceholder: "e.g. Anna",
-    lastNamePlaceholder: "e.g. Smith",
-    phonePlaceholder: "+1 123 456789",
-    emailPlaceholder: "example@email.com",
+    // Section 1: Treatment Description
+    section1Title: "1. Treatment Description",
+    section1Text:
+      "I, the undersigned client, expressly consent to receiving cosmetic pigmentation (Permanent Make-up).",
+    section1Text2:
+      "This treatment involves the introduction of color pigments into the upper skin layer using a fine needle/blade and will be performed on the following areas: (please check):",
 
-    // Health Information
-    allergies: "Allergies",
-    allergiesPlaceholder: "Please list any known allergies...",
-    healthNotes: "Health Notes",
-    healthNotesPlaceholder: "Medications, skin conditions, etc...",
+    // Treatment Types
+    treatmentManualHairStroke: "manual hair stroke technique",
+    treatmentPowderShading: "powder shading",
+    treatmentComboHairShading: "combination of hair strokes & shading",
+    treatmentLipFullShading: "lip pigmentation, full shading",
+    treatmentLipPartialShading: "lip pigmentation, partial shading",
+    treatmentEyeliner: "eyeliner",
+    treatmentLashLine: "lash line enhancement upper/lower",
 
-    // Preferences
-    preferencesLabel: "Notes",
-    preferencesPlaceholder: "Special requests, preferred treatments, etc...",
+    // Section 2: Health Information
+    section2Title: "2. Health Information",
+    section2Text:
+      "I confirm that I have truthfully provided the following information:",
 
-    // Photo
-    photoLabel: "Skin Condition / Before Photo",
-    choosePhoto: "Choose or take a photo",
-    removePhoto: "Remove",
+    // Health Checkboxes
+    healthNoAllergies: "No allergies to color or care products",
+    healthNoBloodDisorders:
+      "No blood clotting disorders / taking blood-thinning medications",
+    healthNoChronicSkinDiseases:
+      "No chronic skin diseases (e.g. atopic dermatitis, psoriasis)",
+    healthNoHerpesInfection: "No active herpes infection (for lip PMU)",
+    healthNoPregnancyBreastfeeding: "Not pregnant or breastfeeding",
+    healthNoRecentCosmeticTreatments:
+      "No recent cosmetic treatments in the affected area",
+    healthNoCardiovascularEpilepsy:
+      "No known cardiovascular diseases / epilepsy",
+    healthNotesLabel: "If any of these apply, please note here:",
 
-    // Signature
+    // Section 3: Treatment Education
+    section3Title: "3. Treatment Information",
+    section3Text:
+      "I have been thoroughly informed about the following points and have understood them:",
+
+    education1:
+      "- The course of treatment, including technique, colors and instruments used.",
+    educationRisksTitle: "Possible risks, including:",
+    educationRisk1: "Skin irritation, swelling, redness",
+    educationRisk2: "Infections with inadequate aftercare",
+    educationRisk3: "allergic reactions to pigments or care products",
+    educationRisk4: "uneven healing / pigment loss",
+
+    educationSideEffectsTitle: "Possible side effects and complications",
+    educationSideEffect1:
+      "That a follow-up treatment is required, as approximately 30-60% of the color may fade after the first treatment.",
+    educationSideEffect2:
+      "That healing varies individually (duration: approximately 5-14 days).",
+    educationSideEffect3:
+      "That the final result is only visible after complete healing (approximately 4-6 weeks).",
+    educationSideEffect4:
+      "That pre-existing skin changes (e.g. scars, couperose, atopic dermatitis) may result in a different outcome.",
+    educationSideEffect5:
+      "That the treatment is not a medical or dermatological procedure.",
+
+    // Section 4: Aftercare
+    section4Title: "4. Aftercare and Healing",
+    section4Text:
+      "I commit to carefully following the provided or verbally explained care instructions during the healing period, in particular:",
+
+    aftercare1: "No scratching or picking of crusts or scabs",
+    aftercare2:
+      "No tanning salon, swimming pool, sauna, or strong sun exposure for the first 7 days",
+    aftercare3: "No make-up or aggressive care products on the treated areas",
+    aftercare4: "Avoid contact with dirt, sweat, or friction",
+    aftercare5: "No direct strong water contact on the area",
+
+    section4Text2:
+      "I am aware that improper aftercare can significantly affect the result and is not the responsibility of the practitioner.",
+
+    // Section 5: Liability
+    section5Title: "5. Liability Disclaimer",
+    section5Text:
+      "I hereby declare that I am undergoing treatment voluntarily and at my own responsibility. I release the practitioner from any liability for possible adverse reactions or aesthetic results, provided they are not due to gross negligence.",
+
+    // Section 6: Data Protection
+    section6Title: "6. Data Protection",
+    section6Text:
+      "I consent to my personal data being documented and stored as part of the treatment. No data will be shared with third parties.",
+
+    photoConsentTitle: "Consent for Photo Use",
+    photoConsentText:
+      "I consent to photos being taken as part of the treatment (e.g. before-and-after photos). These may be used for documentation and advertising purposes, particularly on social media (e.g. Instagram, TikTok), on the website, and in print or online media of the studio.",
+
+    yes: "yes",
+    no: "no",
+
+    // Section 7: Consent and Signature
+    section7Title: "7. Consent and Signature",
+    section7Text: "I confirm that I:",
+
+    consent1: "have fully understood the treatment.",
+    consent2: "have been comprehensively informed.",
+    consent3: "have asked all questions and received satisfactory answers.",
+    consent4: "consent to the treatment.",
+
+    locationDate: "Place, Date",
+
+    // Signatures
+    signatureCustomer: "Client Signature",
+    signaturePractitioner: "Practitioner Signature",
     signatureHint: "Please sign with your finger or a stylus",
+    signatureHintPractitioner: "Signature of the practitioner",
     clearSignature: "Clear Signature",
+
+    // Additional Notes
+    additionalNotesTitle: "Additional Notes",
+    treatmentDate: "Treatment Date:",
+    colorNotes: "Color Combination/Notes:",
 
     // Buttons
     resetForm: "Reset Form",
@@ -146,13 +309,10 @@ const translations = {
       "Are you sure you want to reset the form? All entered data will be lost.",
 
     // PDF
-    pdfClientOnboarding: "Client Onboarding",
+    pdfClientOnboarding: "Client Consent Form for Permanent Make-up (PMU)",
     pdfDate: "Date",
     pdfPersonalData: "Personal Information",
-    pdfHealthData: "Health Information",
-    pdfPreferences: "Preferences & Notes",
-    pdfPhoto: "Photo",
-    pdfSignature: "Client Signature",
+    pdfSignature: "Signature",
     pdfNone: "Not specified",
   },
 };

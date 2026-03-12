@@ -595,6 +595,89 @@ body {
 }
 
 /* ===========================
+   Checkboxes & Radio Buttons
+   =========================== */
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.checkbox-label,
+.radio-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  border-radius: var(--border-radius-xs);
+  transition: background 0.2s ease;
+  user-select: none;
+}
+
+.checkbox-label:hover,
+.radio-label:hover {
+  background: var(--primary);
+}
+
+.checkbox-label input[type="checkbox"],
+.radio-label input[type="radio"] {
+  margin-top: 0.2em;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.checkbox-label span,
+.radio-label span {
+  flex: 1;
+  line-height: 1.5;
+}
+
+/* ===========================
+   Section Text & Lists
+   =========================== */
+
+.section-text {
+  margin: var(--spacing-sm) 0;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+.subsection-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+}
+
+.info-list {
+  margin: var(--spacing-sm) 0;
+}
+
+.info-list p {
+  margin: var(--spacing-sm) 0;
+  line-height: 1.6;
+}
+
+.bullet-list {
+  margin: var(--spacing-sm) 0;
+  padding-left: var(--spacing-md);
+  list-style-type: disc;
+}
+
+.bullet-list li {
+  margin: var(--spacing-xs) 0;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+/* ===========================
    Footer
    =========================== */
 

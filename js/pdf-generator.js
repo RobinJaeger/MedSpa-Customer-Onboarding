@@ -3,7 +3,11 @@
 // ===========================
 
 // Generate PDF from form data
-async function generatePDF(formData, signatureDataURL, photoDataURL) {
+async function generatePDF(
+  formData,
+  signatureDataURL,
+  signaturePractitionerDataURL,
+) {
   try {
     // Get jsPDF from window (loaded via script tag)
     const { jsPDF } = window.jspdf;
@@ -42,13 +46,24 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
       return y + lines.length * fontSize * 0.35; // Return new Y position
     };
 
-    // Helper function to add a section
+    // Helper function to check page break
+    const checkPageBreak = (neededSpace = 40) => {
+      if (yPosition > pageHeight - neededSpace) {
+        doc.addPage();
+        yPosition = margin;
+        return true;
+      }
+      return false;
+    };
+
+    // Helper function to add a section header
     const addSection = (title) => {
+      checkPageBreak(20);
       yPosition += 8;
       doc.setFillColor(...primaryColor);
       doc.rect(margin, yPosition - 5, contentWidth, 8, "F");
       doc.setTextColor(255, 255, 255);
-      doc.setFontSize(12);
+      doc.setFontSize(11);
       doc.setFont("helvetica", "bold");
       doc.text(title, margin + 3, yPosition);
       yPosition += 10;
@@ -58,12 +73,7 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
     // Helper function to add a field
     const addField = (label, value, isFullWidth = false) => {
       const fieldWidth = isFullWidth ? contentWidth : contentWidth / 2 - 5;
-
-      // Check if we need a new page
-      if (yPosition > pageHeight - 40) {
-        doc.addPage();
-        yPosition = margin;
-      }
+      checkPageBreak();
 
       doc.setFontSize(9);
       doc.setFont("helvetica", "bold");
@@ -79,21 +89,76 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
       doc.text(lines, margin + 2, yPosition);
 
       yPosition += Math.max(lines.length * 5, 8);
-
       return yPosition;
+    };
+
+    // Helper function to add paragraph text
+    const addParagraph = (text) => {
+      checkPageBreak();
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...textColor);
+      const lines = doc.splitTextToSize(text, contentWidth);
+      doc.text(lines, margin, yPosition);
+      yPosition += lines.length * 5 + 3;
+    };
+
+    // Helper function to add bullet list
+    const addBulletList = (items) => {
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...textColor);
+
+      items.forEach((item) => {
+        checkPageBreak();
+        const lines = doc.splitTextToSize(item, contentWidth - 5);
+        doc.text("•", margin, yPosition);
+        doc.text(lines, margin + 5, yPosition);
+        yPosition += lines.length * 5;
+      });
+      yPosition += 3;
+    };
+
+    // Helper function to draw checkbox
+    const drawCheckbox = (x, y, checked) => {
+      const size = 4;
+      // Draw checkbox border
+      doc.setDrawColor(...textColor);
+      doc.setLineWidth(0.3);
+      doc.rect(x, y - size + 1, size, size);
+
+      // Draw X if checked
+      if (checked) {
+        doc.setLineWidth(0.5);
+        doc.line(x + 0.5, y - size + 1.5, x + size - 0.5, y - 0.5);
+        doc.line(x + size - 0.5, y - size + 1.5, x + 0.5, y - 0.5);
+      }
+    };
+
+    // Helper function to draw radio button
+    const drawRadioButton = (x, y, selected) => {
+      const radius = 2;
+      // Draw outer circle
+      doc.setDrawColor(...textColor);
+      doc.setLineWidth(0.3);
+      doc.circle(x + radius, y - radius + 0.5, radius);
+
+      // Draw filled circle if selected
+      if (selected) {
+        doc.setFillColor(...textColor);
+        doc.circle(x + radius, y - radius + 0.5, radius * 0.6, "F");
+      }
     };
 
     // ===========================
     // Header
     // ===========================
 
-    // Title
-    doc.setFontSize(20);
+    doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(...primaryColor);
     doc.text(t("pdfClientOnboarding"), margin, yPosition);
 
-    // Date
     yPosition += 8;
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
@@ -104,7 +169,6 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
     );
     doc.text(`${t("pdfDate")}: ${currentDate}`, margin, yPosition);
 
-    // Divider line
     yPosition += 5;
     doc.setDrawColor(...lightGray);
     doc.setLineWidth(0.5);
@@ -117,37 +181,14 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
 
     addSection(t("pdfPersonalData"));
 
+    addField(t("customerName"), formData.customerName, true);
+
     const col1X = margin;
     const col2X = margin + contentWidth / 2 + 5;
     let col1Y = yPosition;
     let col2Y = yPosition;
 
-    // First Name
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "bold");
-    doc.text(t("firstName") + ":", col1X, col1Y);
-    col1Y += 5;
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(formData.firstName || t("pdfNone"), col1X + 2, col1Y);
-    col1Y += 8;
-
-    // Last Name
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "bold");
-    doc.text(t("lastName") + ":", col2X, col2Y);
-    col2Y += 5;
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(formData.lastName || t("pdfNone"), col2X + 2, col2Y);
-    col2Y += 8;
-
-    yPosition = Math.max(col1Y, col2Y);
-
     // Birth Date
-    col1Y = yPosition;
-    col2Y = yPosition;
-
     doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
     doc.text(t("birthDate") + ":", col1X, col1Y);
@@ -173,82 +214,185 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
     col2Y += 8;
 
     yPosition = Math.max(col1Y, col2Y);
-
-    // Email (full width)
     addField(t("email"), formData.email, true);
 
     // ===========================
-    // Health Information
+    // Section 1: Treatment Description
     // ===========================
 
-    addSection(t("pdfHealthData"));
+    addSection(t("section1Title"));
+    addParagraph(t("section1Text"));
+    addParagraph(t("section1Text2"));
 
-    addField(t("allergies"), formData.allergies, true);
-    addField(t("healthNotes"), formData.healthNotes, true);
+    // Treatment checkboxes
+    const treatmentLabels = {
+      manualHairStroke: t("treatmentManualHairStroke"),
+      powderShading: t("treatmentPowderShading"),
+      comboHairShading: t("treatmentComboHairShading"),
+      lipFullShading: t("treatmentLipFullShading"),
+      lipPartialShading: t("treatmentLipPartialShading"),
+      eyeliner: t("treatmentEyeliner"),
+      lashLine: t("treatmentLashLine"),
+    };
 
-    // ===========================
-    // Preferences
-    // ===========================
-
-    addSection(t("pdfPreferences"));
-
-    addField(t("preferencesLabel"), formData.preferences, true);
-
-    // ===========================
-    // Photo (if provided)
-    // ===========================
-
-    if (photoDataURL) {
-      addSection(t("pdfPhoto"));
-
-      // Check if we need a new page for the photo
-      if (yPosition > pageHeight - 100) {
-        doc.addPage();
-        yPosition = margin;
-      }
-
-      try {
-        // Add photo with max dimensions
-        const maxPhotoWidth = contentWidth * 0.6;
-        const maxPhotoHeight = 80;
-
-        // Add image (jsPDF will maintain aspect ratio)
-        doc.addImage(
-          photoDataURL,
-          "JPEG",
-          margin,
-          yPosition,
-          maxPhotoWidth,
-          maxPhotoHeight,
-        );
-
-        yPosition += maxPhotoHeight + 10;
-      } catch (error) {
-        console.error("Error adding photo to PDF:", error);
-        doc.setFontSize(10);
-        doc.text("(Photo could not be added)", margin, yPosition);
-        yPosition += 10;
-      }
-    }
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    Object.keys(treatmentLabels).forEach((key) => {
+      checkPageBreak();
+      const checked = formData.treatments.includes(key);
+      drawCheckbox(margin, yPosition, checked);
+      doc.text(treatmentLabels[key], margin + 7, yPosition);
+      yPosition += 6;
+    });
+    yPosition += 3;
 
     // ===========================
-    // Signature
+    // Section 2: Health Information
     // ===========================
 
-    // Check if we need a new page for the signature
-    if (yPosition > pageHeight - 80) {
-      doc.addPage();
-      yPosition = margin;
-    }
+    addSection(t("section2Title"));
+    addParagraph(t("section2Text"));
 
-    addSection(t("pdfSignature"));
+    // Health checkboxes
+    const healthLabels = {
+      noAllergies: t("healthNoAllergies"),
+      noBloodDisorders: t("healthNoBloodDisorders"),
+      noChronicSkinDiseases: t("healthNoChronicSkinDiseases"),
+      noHerpesInfection: t("healthNoHerpesInfection"),
+      noPregnancyBreastfeeding: t("healthNoPregnancyBreastfeeding"),
+      noRecentCosmeticTreatments: t("healthNoRecentCosmeticTreatments"),
+      noCardiovascularEpilepsy: t("healthNoCardiovascularEpilepsy"),
+    };
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    Object.keys(healthLabels).forEach((key) => {
+      checkPageBreak();
+      const checked = formData.healthConditions.includes(key);
+      drawCheckbox(margin, yPosition, checked);
+      const lines = doc.splitTextToSize(healthLabels[key], contentWidth - 7);
+      doc.text(lines, margin + 7, yPosition);
+      yPosition += lines.length * 5 + 1;
+    });
+    yPosition += 5;
+
+    addField(t("healthNotesLabel"), formData.healthNotes, true);
+
+    // ===========================
+    // Section 3: Treatment Education
+    // ===========================
+
+    addSection(t("section3Title"));
+    addParagraph(t("section3Text"));
+    addParagraph(t("education1"));
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text(t("educationRisksTitle"), margin, yPosition);
+    yPosition += 5;
+
+    addBulletList([
+      t("educationRisk1"),
+      t("educationRisk2"),
+      t("educationRisk3"),
+      t("educationRisk4"),
+    ]);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(t("educationSideEffectsTitle"), margin, yPosition);
+    yPosition += 5;
+
+    addBulletList([
+      t("educationSideEffect1"),
+      t("educationSideEffect2"),
+      t("educationSideEffect3"),
+      t("educationSideEffect4"),
+      t("educationSideEffect5"),
+    ]);
+
+    // ===========================
+    // Section 4: Aftercare
+    // ===========================
+
+    addSection(t("section4Title"));
+    addParagraph(t("section4Text"));
+
+    addBulletList([
+      t("aftercare1"),
+      t("aftercare2"),
+      t("aftercare3"),
+      t("aftercare4"),
+      t("aftercare5"),
+    ]);
+
+    addParagraph(t("section4Text2"));
+
+    // ===========================
+    // Section 5: Liability
+    // ===========================
+
+    addSection(t("section5Title"));
+    addParagraph(t("section5Text"));
+
+    // ===========================
+    // Section 6: Data Protection
+    // ===========================
+
+    addSection(t("section6Title"));
+    addParagraph(t("section6Text"));
+
+    yPosition += 3;
+    doc.setFont("helvetica", "bold");
+    doc.text(t("photoConsentTitle"), margin, yPosition);
+    yPosition += 5;
+
+    doc.setFont("helvetica", "normal");
+    const photoConsentLines = doc.splitTextToSize(
+      t("photoConsentText"),
+      contentWidth,
+    );
+    doc.text(photoConsentLines, margin, yPosition);
+    yPosition += photoConsentLines.length * 5 + 5;
+
+    // Draw radio buttons for yes/no
+    const yesSelected = formData.photoConsent === "yes";
+    const noSelected = formData.photoConsent === "no";
+
+    drawRadioButton(margin, yPosition, yesSelected);
+    doc.text(t("yes"), margin + 7, yPosition);
+
+    drawRadioButton(margin + 25, yPosition, noSelected);
+    doc.text(t("no"), margin + 32, yPosition);
+
+    yPosition += 8;
+
+    // ===========================
+    // Section 7: Consent and Signature
+    // ===========================
+
+    addSection(t("section7Title"));
+    addParagraph(t("section7Text"));
+
+    addBulletList([t("consent1"), t("consent2"), t("consent3"), t("consent4")]);
+
+    addField(t("locationDate"), formData.locationDate, true);
+
+    // ===========================
+    // Signatures
+    // ===========================
+
+    checkPageBreak(80);
+
+    // Customer Signature
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text(t("signatureCustomer"), margin, yPosition);
+    yPosition += 5;
 
     if (signatureDataURL) {
       try {
-        // Add signature
-        const signatureWidth = contentWidth * 0.7;
-        const signatureHeight = 40;
-
+        const signatureWidth = contentWidth * 0.6;
+        const signatureHeight = 30;
         doc.addImage(
           signatureDataURL,
           "PNG",
@@ -257,17 +401,62 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
           signatureWidth,
           signatureHeight,
         );
-
-        yPosition += signatureHeight + 5;
-
-        // Add date under signature
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "italic");
-        doc.text(currentDate, margin, yPosition);
+        yPosition += signatureHeight + 3;
       } catch (error) {
-        console.error("Error adding signature to PDF:", error);
+        console.error("Error adding customer signature:", error);
         doc.setFontSize(10);
         doc.text("(Signature could not be added)", margin, yPosition);
+        yPosition += 10;
+      }
+    }
+
+    yPosition += 8;
+
+    // Practitioner Signature
+    checkPageBreak(80);
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text(t("signaturePractitioner"), margin, yPosition);
+    yPosition += 5;
+
+    if (signaturePractitionerDataURL) {
+      try {
+        const signatureWidth = contentWidth * 0.6;
+        const signatureHeight = 30;
+        doc.addImage(
+          signaturePractitionerDataURL,
+          "PNG",
+          margin,
+          yPosition,
+          signatureWidth,
+          signatureHeight,
+        );
+        yPosition += signatureHeight + 3;
+      } catch (error) {
+        console.error("Error adding practitioner signature:", error);
+        doc.setFontSize(10);
+        doc.text("(Signature could not be added)", margin, yPosition);
+        yPosition += 10;
+      }
+    }
+
+    // ===========================
+    // Additional Notes
+    // ===========================
+
+    if (formData.treatmentDate || formData.colorNotes) {
+      addSection(t("additionalNotesTitle"));
+
+      if (formData.treatmentDate) {
+        const treatmentDateFormatted = new Date(
+          formData.treatmentDate,
+        ).toLocaleDateString(getCurrentLanguage() === "de" ? "de-DE" : "en-US");
+        addField(t("treatmentDate"), treatmentDateFormatted, true);
+      }
+
+      if (formData.colorNotes) {
+        addField(t("colorNotes"), formData.colorNotes, true);
       }
     }
 
@@ -297,15 +486,13 @@ async function generatePDF(formData, signatureDataURL, photoDataURL) {
     // Save PDF
     // ===========================
 
-    // Generate filename: Onboarding_LastName_FirstName_YYYY-MM-DD.pdf
     const sanitize = (str) => {
       return str.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_");
     };
 
     const dateString = new Date().toISOString().split("T")[0];
-    const fileName = `Onboarding_${sanitize(formData.lastName)}_${sanitize(formData.firstName)}_${dateString}.pdf`;
+    const fileName = `PMU_Consent_${sanitize(formData.customerName)}_${dateString}.pdf`;
 
-    // Save the PDF
     doc.save(fileName);
 
     return true;

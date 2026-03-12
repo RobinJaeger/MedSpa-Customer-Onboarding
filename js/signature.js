@@ -3,48 +3,77 @@
 // ===========================
 
 let signaturePad = null;
+let signaturePadPractitioner = null;
 
-// Initialize signature pad
+// Initialize signature pads
 function initSignaturePad() {
+  // Initialize customer signature
   const canvas = document.getElementById("signatureCanvas");
+  if (canvas) {
+    resizeCanvas(canvas);
+    signaturePad = new SignaturePad(canvas, {
+      backgroundColor: "rgb(255, 255, 255)",
+      penColor: "rgb(0, 0, 0)",
+      minWidth: 1,
+      maxWidth: 2.5,
+      throttle: 16,
+      minDistance: 5,
+      velocityFilterWeight: 0.7,
+    });
 
-  if (!canvas) {
-    console.error("Signature canvas not found");
-    return;
+    // Clear button for customer signature
+    const clearButton = document.getElementById("clearSignature");
+    if (clearButton) {
+      clearButton.addEventListener("click", () => {
+        clearSignature();
+      });
+    }
+
+    setupCanvasTouchHandlers(canvas);
   }
 
-  // Set canvas size based on container
-  resizeCanvas(canvas);
-
-  // Initialize SignaturePad
-  signaturePad = new SignaturePad(canvas, {
-    backgroundColor: "rgb(255, 255, 255)",
-    penColor: "rgb(0, 0, 0)",
-    minWidth: 1,
-    maxWidth: 2.5,
-    throttle: 16, // Smooth drawing at ~60fps
-    minDistance: 5,
-    velocityFilterWeight: 0.7,
-  });
-
-  // Clear signature button
-  const clearButton = document.getElementById("clearSignature");
-  if (clearButton) {
-    clearButton.addEventListener("click", () => {
-      clearSignature();
+  // Initialize practitioner signature
+  const canvasPractitioner = document.getElementById(
+    "signatureCanvasPractitioner",
+  );
+  if (canvasPractitioner) {
+    resizeCanvas(canvasPractitioner);
+    signaturePadPractitioner = new SignaturePad(canvasPractitioner, {
+      backgroundColor: "rgb(255, 255, 255)",
+      penColor: "rgb(0, 0, 0)",
+      minWidth: 1,
+      maxWidth: 2.5,
+      throttle: 16,
+      minDistance: 5,
+      velocityFilterWeight: 0.7,
     });
+
+    // Clear button for practitioner signature
+    const clearButtonPractitioner = document.getElementById(
+      "clearSignaturePractitioner",
+    );
+    if (clearButtonPractitioner) {
+      clearButtonPractitioner.addEventListener("click", () => {
+        clearSignaturePractitioner();
+      });
+    }
+
+    setupCanvasTouchHandlers(canvasPractitioner);
   }
 
   // Handle window resize
   window.addEventListener("resize", () => {
-    resizeCanvas(canvas);
+    if (canvas) resizeCanvas(canvas);
+    if (canvasPractitioner) resizeCanvas(canvasPractitioner);
   });
+}
 
+// Setup touch event handlers for a canvas
+function setupCanvasTouchHandlers(canvas) {
   // Prevent scrolling when drawing on touch devices
   canvas.addEventListener(
     "touchstart",
     (e) => {
-      // Only prevent if it's a single touch on the canvas
       if (e.touches.length === 1) {
         e.preventDefault();
       }
@@ -68,10 +97,14 @@ function resizeCanvas(canvas) {
   const ratio = Math.max(window.devicePixelRatio || 1, 1);
   const rect = canvas.getBoundingClientRect();
 
+  // Determine which signature pad this canvas belongs to
+  const isPractitioner = canvas.id === "signatureCanvasPractitioner";
+  const pad = isPractitioner ? signaturePadPractitioner : signaturePad;
+
   // Store current signature data if exists
   let savedData = null;
-  if (signaturePad && !signaturePad.isEmpty()) {
-    savedData = signaturePad.toData();
+  if (pad && !pad.isEmpty()) {
+    savedData = pad.toData();
   }
 
   // Set display size
@@ -83,19 +116,17 @@ function resizeCanvas(canvas) {
   ctx.scale(ratio, ratio);
 
   // Restore signature if it existed
-  if (savedData && signaturePad) {
-    signaturePad.fromData(savedData);
-  } else if (signaturePad) {
-    signaturePad.clear();
+  if (savedData && pad) {
+    pad.fromData(savedData);
+  } else if (pad) {
+    pad.clear();
   }
 }
 
-// Clear signature
+// Clear customer signature
 function clearSignature() {
   if (signaturePad) {
     signaturePad.clear();
-
-    // Remove error state if present
     const canvas = document.getElementById("signatureCanvas");
     if (canvas) {
       canvas.classList.remove("error");
@@ -103,47 +134,97 @@ function clearSignature() {
   }
 }
 
-// Check if signature is empty
+// Clear practitioner signature
+function clearSignaturePractitioner() {
+  if (signaturePadPractitioner) {
+    signaturePadPractitioner.clear();
+    const canvas = document.getElementById("signatureCanvasPractitioner");
+    if (canvas) {
+      canvas.classList.remove("error");
+    }
+  }
+}
+
+// Check if customer signature is empty
 function isSignatureEmpty() {
   return signaturePad ? signaturePad.isEmpty() : true;
 }
 
-// Get signature as data URL (PNG)
+// Check if practitioner signature is empty
+function isSignaturePractitionerEmpty() {
+  return signaturePadPractitioner ? signaturePadPractitioner.isEmpty() : true;
+}
+
+// Get customer signature as data URL (PNG)
 function getSignatureDataURL() {
   if (!signaturePad || signaturePad.isEmpty()) {
     return null;
   }
-
   return signaturePad.toDataURL("image/png");
 }
 
-// Get signature as data (for restoration)
+// Get practitioner signature as data URL (PNG)
+function getSignaturePractitionerDataURL() {
+  if (!signaturePadPractitioner || signaturePadPractitioner.isEmpty()) {
+    return null;
+  }
+  return signaturePadPractitioner.toDataURL("image/png");
+}
+
+// Get customer signature as data (for restoration)
 function getSignatureData() {
   if (!signaturePad || signaturePad.isEmpty()) {
     return null;
   }
-
   return signaturePad.toData();
 }
 
-// Restore signature from data
+// Get practitioner signature as data (for restoration)
+function getSignaturePractitionerData() {
+  if (!signaturePadPractitioner || signaturePadPractitioner.isEmpty()) {
+    return null;
+  }
+  return signaturePadPractitioner.toData();
+}
+
+// Restore customer signature from data
 function setSignatureData(data) {
   if (signaturePad && data) {
     signaturePad.fromData(data);
   }
 }
 
-// Validate signature (show error state if empty)
+// Restore practitioner signature from data
+function setSignaturePractitionerData(data) {
+  if (signaturePadPractitioner && data) {
+    signaturePadPractitioner.fromData(data);
+  }
+}
+
+// Validate customer signature (show error state if empty)
 function validateSignature() {
   const canvas = document.getElementById("signatureCanvas");
-
   if (isSignatureEmpty()) {
     if (canvas) {
       canvas.classList.add("error");
     }
     return false;
   }
+  if (canvas) {
+    canvas.classList.remove("error");
+  }
+  return true;
+}
 
+// Validate practitioner signature (show error state if empty)
+function validateSignaturePractitioner() {
+  const canvas = document.getElementById("signatureCanvasPractitioner");
+  if (isSignaturePractitionerEmpty()) {
+    if (canvas) {
+      canvas.classList.add("error");
+    }
+    return false;
+  }
   if (canvas) {
     canvas.classList.remove("error");
   }

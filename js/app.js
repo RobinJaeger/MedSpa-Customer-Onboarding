@@ -2,32 +2,13 @@
 // Main Application Logic
 // ===========================
 
-// State
-let uploadedPhotoDataURL = null;
-
 // Initialize application
 function initApp() {
   // Get form and elements
   const form = document.getElementById("onboardingForm");
-  const photoInput = document.getElementById("photoInput");
-  const photoPreview = document.getElementById("photoPreview");
-  const previewImage = document.getElementById("previewImage");
-  const removePhotoBtn = document.getElementById("removePhoto");
   const resetFormBtn = document.getElementById("resetForm");
   const loadingOverlay = document.getElementById("loadingOverlay");
   const successMessage = document.getElementById("successMessage");
-
-  // ===========================
-  // Photo Upload Handling
-  // ===========================
-
-  if (photoInput) {
-    photoInput.addEventListener("change", handlePhotoUpload);
-  }
-
-  if (removePhotoBtn) {
-    removePhotoBtn.addEventListener("click", removePhoto);
-  }
 
   // ===========================
   // Form Submission
@@ -58,105 +39,6 @@ function initApp() {
   });
 }
 
-// Handle photo upload
-function handlePhotoUpload(event) {
-  const file = event.target.files[0];
-
-  if (!file) return;
-
-  // Validate file type
-  if (!file.type.match("image.*")) {
-    alert("Please select an image file.");
-    return;
-  }
-
-  // Validate file size (max 5MB)
-  const maxSize = 5 * 1024 * 1024; // 5MB
-  if (file.size > maxSize) {
-    alert("Image file is too large. Maximum size is 5MB.");
-    event.target.value = "";
-    return;
-  }
-
-  // Read and compress image
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    compressImage(e.target.result, (compressedDataURL) => {
-      uploadedPhotoDataURL = compressedDataURL;
-      displayPhotoPreview(compressedDataURL);
-    });
-  };
-
-  reader.readAsDataURL(file);
-}
-
-// Compress image to reduce PDF size
-function compressImage(dataURL, callback) {
-  const img = new Image();
-
-  img.onload = function () {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // Calculate new dimensions (max 1200px width)
-    const maxWidth = 1200;
-    let width = img.width;
-    let height = img.height;
-
-    if (width > maxWidth) {
-      height = (maxWidth / width) * height;
-      width = maxWidth;
-    }
-
-    // Set canvas size
-    canvas.width = width;
-    canvas.height = height;
-
-    // Draw image
-    ctx.drawImage(img, 0, 0, width, height);
-
-    // Get compressed data URL
-    const compressedDataURL = canvas.toDataURL("image/jpeg", 0.8);
-
-    callback(compressedDataURL);
-  };
-
-  img.src = dataURL;
-}
-
-// Display photo preview
-function displayPhotoPreview(dataURL) {
-  const photoPreview = document.getElementById("photoPreview");
-  const previewImage = document.getElementById("previewImage");
-
-  if (photoPreview && previewImage) {
-    previewImage.src = dataURL;
-    photoPreview.classList.remove("hidden");
-  }
-}
-
-// Remove photo
-function removePhoto() {
-  uploadedPhotoDataURL = null;
-
-  const photoInput = document.getElementById("photoInput");
-  const photoPreview = document.getElementById("photoPreview");
-  const previewImage = document.getElementById("previewImage");
-
-  if (photoInput) {
-    photoInput.value = "";
-  }
-
-  if (photoPreview) {
-    photoPreview.classList.add("hidden");
-  }
-
-  if (previewImage) {
-    previewImage.src = "";
-  }
-}
-
 // Handle form submission
 async function handleFormSubmit(event) {
   event.preventDefault();
@@ -169,12 +51,19 @@ async function handleFormSubmit(event) {
   // Collect form data
   const formData = collectFormData();
 
-  // Get signature
+  // Get signatures
   const signatureDataURL = getSignatureDataURL();
+  const signaturePractitionerDataURL = getSignaturePractitionerDataURL();
 
   if (!signatureDataURL) {
     alert(t("signatureRequired"));
-    validateSignature(); // This will add error styling
+    validateSignature();
+    return;
+  }
+
+  if (!signaturePractitionerDataURL) {
+    alert(t("signatureRequired"));
+    validateSignaturePractitioner();
     return;
   }
 
@@ -189,7 +78,7 @@ async function handleFormSubmit(event) {
     const success = await generatePDF(
       formData,
       signatureDataURL,
-      uploadedPhotoDataURL,
+      signaturePractitionerDataURL,
     );
 
     if (success) {
@@ -218,37 +107,85 @@ async function handleFormSubmit(event) {
 function validateForm() {
   let isValid = true;
 
-  // Validate required fields: First Name, Last Name
-  const firstName = document.getElementById("firstName");
-  const lastName = document.getElementById("lastName");
-
-  if (firstName && !firstName.value.trim()) {
-    firstName.focus();
-    alert(t("firstName") + ": " + t("requiredField"));
-    isValid = false;
-  }
-
-  if (lastName && !lastName.value.trim()) {
-    lastName.focus();
-    alert(t("lastName") + ": " + t("requiredField"));
-    isValid = false;
-  }
-
-  // Validate signature
-  if (!validateSignature()) {
-    alert(t("signatureRequired"));
-    isValid = false;
-  }
-
-  // Validate email if provided
+  // Validate required fields
+  const customerName = document.getElementById("customerName");
+  const birthDate = document.getElementById("birthDate");
+  const phone = document.getElementById("phone");
   const email = document.getElementById("email");
+  const locationDate = document.getElementById("locationDate");
+
+  if (customerName && !customerName.value.trim()) {
+    customerName.focus();
+    alert(t("customerName") + ": " + t("requiredField"));
+    isValid = false;
+    return isValid;
+  }
+
+  if (birthDate && !birthDate.value.trim()) {
+    birthDate.focus();
+    alert(t("birthDate") + ": " + t("requiredField"));
+    isValid = false;
+    return isValid;
+  }
+
+  if (phone && !phone.value.trim()) {
+    phone.focus();
+    alert(t("phone") + ": " + t("requiredField"));
+    isValid = false;
+    return isValid;
+  }
+
+  if (email && !email.value.trim()) {
+    email.focus();
+    alert(t("email") + ": " + t("requiredField"));
+    isValid = false;
+    return isValid;
+  }
+
+  // Validate email format
   if (email && email.value.trim()) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email.value.trim())) {
       email.focus();
       alert(t("invalidEmail"));
       isValid = false;
+      return isValid;
     }
+  }
+
+  if (locationDate && !locationDate.value.trim()) {
+    locationDate.focus();
+    alert(t("locationDate") + ": " + t("requiredField"));
+    isValid = false;
+    return isValid;
+  }
+
+  // Validate photo consent radio button is selected
+  const photoConsentRadios = document.querySelectorAll(
+    'input[name="photoConsent"]',
+  );
+  let photoConsentSelected = false;
+  photoConsentRadios.forEach((radio) => {
+    if (radio.checked) photoConsentSelected = true;
+  });
+
+  if (!photoConsentSelected) {
+    alert(t("photoConsentTitle") + ": " + t("requiredField"));
+    isValid = false;
+    return isValid;
+  }
+
+  // Validate signatures
+  if (!validateSignature()) {
+    alert(t("signatureRequired"));
+    isValid = false;
+    return isValid;
+  }
+
+  if (!validateSignaturePractitioner()) {
+    alert(t("signatureRequired"));
+    isValid = false;
+    return isValid;
   }
 
   return isValid;
@@ -256,15 +193,36 @@ function validateForm() {
 
 // Collect form data
 function collectFormData() {
+  // Collect treatment checkboxes
+  const treatmentCheckboxes = document.querySelectorAll(
+    'input[name="treatment[]"]:checked',
+  );
+  const treatments = Array.from(treatmentCheckboxes).map((cb) => cb.value);
+
+  // Collect health checkboxes
+  const healthCheckboxes = document.querySelectorAll(
+    'input[name="health[]"]:checked',
+  );
+  const healthConditions = Array.from(healthCheckboxes).map((cb) => cb.value);
+
+  // Get photo consent
+  const photoConsentRadio = document.querySelector(
+    'input[name="photoConsent"]:checked',
+  );
+  const photoConsent = photoConsentRadio ? photoConsentRadio.value : "";
+
   return {
-    firstName: document.getElementById("firstName")?.value.trim() || "",
-    lastName: document.getElementById("lastName")?.value.trim() || "",
+    customerName: document.getElementById("customerName")?.value.trim() || "",
     birthDate: document.getElementById("birthDate")?.value || "",
     phone: document.getElementById("phone")?.value.trim() || "",
     email: document.getElementById("email")?.value.trim() || "",
-    allergies: document.getElementById("allergies")?.value.trim() || "",
+    treatments: treatments,
+    healthConditions: healthConditions,
     healthNotes: document.getElementById("healthNotes")?.value.trim() || "",
-    preferences: document.getElementById("preferences")?.value.trim() || "",
+    locationDate: document.getElementById("locationDate")?.value.trim() || "",
+    photoConsent: photoConsent,
+    treatmentDate: document.getElementById("treatmentDate")?.value || "",
+    colorNotes: document.getElementById("colorNotes")?.value.trim() || "",
   };
 }
 
@@ -276,16 +234,22 @@ function resetForm() {
     form.reset();
   }
 
-  // Clear signature
+  // Clear signatures
   clearSignature();
-
-  // Remove photo
-  removePhoto();
+  clearSignaturePractitioner();
 
   // Remove any error states
   const canvas = document.getElementById("signatureCanvas");
+  const canvasPractitioner = document.getElementById(
+    "signatureCanvasPractitioner",
+  );
+
   if (canvas) {
     canvas.classList.remove("error");
+  }
+
+  if (canvasPractitioner) {
+    canvasPractitioner.classList.remove("error");
   }
 }
 
@@ -315,11 +279,23 @@ function hasFormData() {
     }
   }
 
+  // Check checkboxes
+  const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+  if (checkboxes.length > 0) {
+    return true;
+  }
+
+  // Check radio buttons
+  const radios = form.querySelectorAll('input[type="radio"]:checked');
+  if (radios.length > 0) {
+    return true;
+  }
+
   if (!isSignatureEmpty()) {
     return true;
   }
 
-  if (uploadedPhotoDataURL) {
+  if (!isSignaturePractitionerEmpty()) {
     return true;
   }
 
