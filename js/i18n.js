@@ -141,7 +141,8 @@ const translations = {
     successText: "PDF erfolgreich erstellt!",
 
     // Footer
-    footerText: "© 2026 Kosmetikstudio | Alle Daten bleiben auf Ihrem Gerät",
+    footerText:
+      "© 2026 Kosmetikstudio | Ihre Formulardaten werden nur lokal verarbeitet",
 
     // Validation
     requiredField: "Dieses Feld ist erforderlich",
@@ -297,7 +298,8 @@ const translations = {
     successText: "PDF created successfully!",
 
     // Footer
-    footerText: "© 2026 Beauty Studio | All data stays on your device",
+    footerText:
+      "© 2026 Beauty Studio | Your form data is processed locally only",
 
     // Validation
     requiredField: "This field is required",
